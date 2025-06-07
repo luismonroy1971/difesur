@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Difesur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .productos-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: #f8f9fa;
+        }
+        
+        .intro-section {
+            background: linear-gradient(135deg, #FFB92A 0%, #F49B00 100%);
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-100px); }
+        }
+        
+        .intro-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .intro-section p {
+            color: #2c3e50;
+            font-size: 1.2em;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 20px;
+        }
+        
+        .marcas {
+            background: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+        
+        .marcas strong {
+            color: #FFB92A;
+        }
+        
+        .filtros-container {
+            margin-bottom: 40px;
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .filtros-titulo {
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .filtros-botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filtro-btn {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border: 2px solid #e9ecef;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+            color: #495057;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .filtro-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 185, 42, 0.3);
+            border-color: #FFB92A;
+            color: #2c3e50;
+        }
+        
+        .filtro-btn.active {
+            background: linear-gradient(145deg, #FFB92A, #F49B00);
+            color: #2c3e50;
+            border-color: #F49B00;
+            box-shadow: 0 8px 25px rgba(255, 185, 42, 0.4);
+            font-weight: bold;
+        }
+        
+        .filtro-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .filtro-btn:hover::before {
+            left: 100%;
+        }
+        
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .producto-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            border: 1px solid #e9ecef;
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .producto-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 185, 42, 0.2);
+        }
+        
+        .producto-card.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+        
+        .producto-imagen {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .producto-imagen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(44, 62, 80, 0.7), rgba(255, 185, 42, 0.3));
+        }
+        
+        .producto-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            color: white;
+            z-index: 2;
+        }
+        
+        .producto-categoria {
+            background: rgba(255, 185, 42, 0.9);
+            color: #2c3e50;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .producto-titulo {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .producto-subtitulo {
+            font-size: 0.95em;
+            opacity: 0.9;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .producto-contenido {
+            padding: 25px;
+            position: relative;
+            top: 180px;
+        }
+        
+        .producto-descripcion {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        
+        .producto-specs {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #FFB92A;
+        }
+        
+        .producto-specs h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        
+        .specs-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .specs-list li {
+            background: white;
+            margin: 8px 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 3px solid #FFB92A;
+            font-size: 0.9em;
+            color: #495057;
+            transition: all 0.2s ease;
+        }
+        
+        .specs-list li:hover {
+            background: #fff8e1;
+            transform: translateX(5px);
+        }
+        
+        .producto-footer {
+            padding: 0 25px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            top: 180px;
+        }
+        
+        .contacto-btn {
+            background: linear-gradient(145deg, #2c3e50, #34495e);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contacto-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 185, 42, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .contacto-btn:hover::before {
+            left: 100%;
+        }
+        
+        .contacto-btn:hover {
+            background: linear-gradient(145deg, #FFB92A, #F49B00);
+            color: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 185, 42, 0.4);
+        }
+        
+        /* Imágenes específicas por categoría */
+        .categoria-acero .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=500&h=300&fit=crop');
+        }
+        
+        .categoria-cementos .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1568605117036-cfb5e31fe51c?w=500&h=300&fit=crop');
+        }
+        
+        .categoria-ladrillos .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=500&h=300&fit=crop');
+        }
+        
+        .categoria-tuberias .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&h=300&fit=crop');
+        }
+        
+        /* Imágenes específicas por producto */
+        .producto-acero-barras .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?w=500&h=300&fit=crop');
+        }
+        
+        .producto-acero-alambres .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&h=300&fit=crop');
+        }
+        
+        .producto-acero-clavos .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=500&h=300&fit=crop');
+        }
+        
+        .producto-cemento-portland .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1568605117036-cfb5e31fe51c?w=500&h=300&fit=crop');
+        }
+        
+        .producto-cemento-ip .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?w=500&h=300&fit=crop');
+        }
+        
+        .producto-cemento-yura .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&h=300&fit=crop');
+        }
+        
+        .producto-ladrillos-king .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=500&h=300&fit=crop');
+        }
+        
+        .producto-ladrillos-pandereta .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=500&h=300&fit=crop');
+        }
+        
+        .producto-ladrillos-techo .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=500&h=300&fit=crop');
+        }
+        
+        .producto-tuberias-presion .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=500&h=300&fit=crop');
+        }
+        
+        .producto-tuberias-desague .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=500&h=300&fit=crop');
+        }
+        
+        .producto-tuberias-electrico .producto-imagen {
+            background-image: url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=500&h=300&fit=crop');
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+            display: none;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .no-results h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            color: #2c3e50;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .precio-tag {
+            background: #FFB92A;
+            color: #2c3e50;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .productos-container {
+                padding: 15px;
+            }
+            
+            .intro-section {
+                padding: 30px 20px;
+            }
+            
+            .intro-section h2 {
+                font-size: 2em;
+            }
+            
+            .filtros-botones {
+                gap: 10px;
+            }
+            
+            .filtro-btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+            
+            .productos-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .producto-contenido,
+            .producto-footer {
+                top: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="productos-container">
+        <div class="intro-section">
+            <h2>Materiales de Construcción</h2>
+            <p>Somos distribuidores autorizados que cumplen con los estándares de calidad y seguridad requeridos por el sector.</p>
+            <div class="marcas">
+                <strong>🏆 Marcas autorizadas:</strong> Yura S.A, Corporación Aceros Arequipa, Siderperu, Prodac, Plastisur y Ladrillera El Diamante
+            </div>
+        </div>
+        
+        <div class="filtros-container">
+            <h3 class="filtros-titulo">Encuentra el material que necesitas</h3>
+            <div class="filtros-botones">
+                <button class="filtro-btn active" data-categoria="todas">📋 Todos los productos</button>
+                <button class="filtro-btn" data-categoria="acero">🔩 Acero</button>
+                <button class="filtro-btn" data-categoria="cementos">🏗️ Cementos</button>
+                <button class="filtro-btn" data-categoria="ladrillos">🧱 Ladrillos</button>
+                <button class="filtro-btn" data-categoria="tuberias">🚿 Tuberías</button>
+            </div>
+        </div>
+        
+        <div class="productos-grid" id="productosGrid">
+            <!-- PRODUCTOS DE ACERO -->
+            <div class="producto-card categoria-acero producto-acero-barras" data-categoria="acero">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Acero</span>
+                        <h3 class="producto-titulo">Barras de Acero Corrugado</h3>
+                        <p class="producto-subtitulo">Múltiples diámetros y longitudes</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Barras de acero corrugado de alta resistencia, ideales para estructuras de concreto armado. Cumplimos con las normas técnicas peruanas para garantizar la calidad en tus construcciones.</p>
+                    <div class="producto-specs">
+                        <h4>📏 Diámetros disponibles:</h4>
+                        <ul class="specs-list">
+                            <li>6 mm (1/4″) - 8 mm (5/16″) - 10 mm (3/8″)</li>
+                            <li>12 mm (1/2″) - 16 mm (5/8″) - 20 mm (3/4″)</li>
+                            <li>25 mm (1″) - 32 mm (1 1/4″) - 40 mm (1 1/2″)</li>
+                        </ul>
+                        <h4>📐 Longitudes estándar:</h4>
+                        <ul class="specs-list">
+                            <li>9 metros y 12 metros</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">Consultar precio</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-acero producto-acero-alambres" data-categoria="acero">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Acero</span>
+                        <h3 class="producto-titulo">Alambres Galvanizados</h3>
+                        <p class="producto-subtitulo">Para construcción y amarres</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Alambres de acero galvanizado de diferentes calibres, perfectos para amarres en construcción, cercos y trabajos de herrería. Resistentes a la corrosión y de larga duración.</p>
+                    <div class="producto-specs">
+                        <h4>✨ Características principales:</h4>
+                        <ul class="specs-list">
+                            <li>Acero galvanizado anticorrosión</li>
+                            <li>Múltiples calibres disponibles</li>
+                            <li>Ideal para amarres y cercos</li>
+                            <li>Alta resistencia y durabilidad</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">Varios precios</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-acero producto-acero-clavos" data-categoria="acero">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Acero</span>
+                        <h3 class="producto-titulo">Clavos de Construcción</h3>
+                        <p class="producto-subtitulo">Diferentes tamaños y tipos</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Clavos de acero para carpintería y construcción en diferentes tamaños. Desde clavos pequeños para acabados hasta clavos grandes para estructura de madera.</p>
+                    <div class="producto-specs">
+                        <h4>🔨 Tipos y tamaños:</h4>
+                        <ul class="specs-list">
+                            <li>Clavos 1" - 2" - 3" - 4"</li>
+                            <li>Clavos para concreto</li>
+                            <li>Clavos de acabado</li>
+                            <li>Clavos galvanizados</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">Por kg</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <!-- PRODUCTOS DE CEMENTO -->
+            <div class="producto-card categoria-cementos producto-cemento-portland" data-categoria="cementos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Cementos</span>
+                        <h3 class="producto-titulo">Cemento Portland Tipo I</h3>
+                        <p class="producto-subtitulo">Bolsas de 42.5 kg</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Cemento Portland Tipo I de uso general, ideal para construcciones convencionales. Perfecto para cimientos, columnas, vigas y losas que no requieren propiedades especiales.</p>
+                    <div class="producto-specs">
+                        <h4>⚡ Especificaciones:</h4>
+                        <ul class="specs-list">
+                            <li>Peso: 42.5 kg por bolsa</li>
+                            <li>Uso general en construcción</li>
+                            <li>Cumple normas técnicas peruanas</li>
+                            <li>Ideal para estructuras convencionales</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 28.50</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-cementos producto-cemento-ip" data-categoria="cementos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Cementos</span>
+                        <h3 class="producto-titulo">Cemento Tipo IP</h3>
+                        <p class="producto-subtitulo">Con puzolana - 42.5 kg</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Cemento Portland con puzolana, que proporciona mayor durabilidad y resistencia a largo plazo. Ideal para obras que requieren mayor impermeabilidad y resistencia química.</p>
+                    <div class="producto-specs">
+                        <h4>🛡️ Ventajas superiores:</h4>
+                        <ul class="specs-list">
+                            <li>Mayor durabilidad y resistencia</li>
+                            <li>Mejor impermeabilidad</li>
+                            <li>Resistencia a sulfatos</li>
+                            <li>Menor calor de hidratación</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 26.80</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-cementos producto-cemento-yura" data-categoria="cementos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Cementos</span>
+                        <h3 class="producto-titulo">Cemento Yura Max</h3>
+                        <p class="producto-subtitulo">Alto rendimiento - 42.5 kg</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Cemento de alta calidad y rendimiento superior, desarrollado con tecnología avanzada. Perfecto para obras que demandan máxima resistencia y durabilidad.</p>
+                    <div class="producto-specs">
+                        <h4>🚀 Características premium:</h4>
+                        <ul class="specs-list">
+                            <li>Alto rendimiento y calidad</li>
+                            <li>Mayor resistencia temprana</li>
+                            <li>Fraguado optimizado</li>
+                            <li>Marca Yura reconocida</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 32.50</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-cementos producto-cemento-yura" data-categoria="cementos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Cementos</span>
+                        <h3 class="producto-titulo">Cemento Yura Pro</h3>
+                        <p class="producto-subtitulo">Profesional - 42.5 kg</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Cemento profesional de la línea Yura, diseñado para constructores exigentes. Ofrece excelente trabajabilidad y resistencias superiores para proyectos profesionales.</p>
+                    <div class="producto-specs">
+                        <h4>👷 Beneficios profesionales:</h4>
+                        <ul class="specs-list">
+                            <li>Excelente trabajabilidad</li>
+                            <li>Resistencias superiores</li>
+                            <li>Control de calidad estricto</li>
+                            <li>Respaldo técnico Yura</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 34.80</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-cementos producto-cemento-portland" data-categoria="cementos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Cementos</span>
+                        <h3 class="producto-titulo">Cemento Anti-Salitre</h3>
+                        <p class="producto-subtitulo">Resistente a sales - 42.5 kg</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Cemento especialmente formulado para resistir el ataque de sales presentes en suelos y aguas. Ideal para zonas costeras y terrenos con alta concentración salina.</p>
+                    <div class="producto-specs">
+                        <h4>🌊 Resistencias especiales:</h4>
+                        <ul class="specs-list">
+                            <li>Resistente al salitre marino</li>
+                            <li>Ideal para zonas costeras</li>
+                            <li>Protege contra sulfatos</li>
+                            <li>Mayor durabilidad ambiental</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 31.20</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <!-- PRODUCTOS DE LADRILLOS -->
+            <div class="producto-card categoria-ladrillos producto-ladrillos-king" data-categoria="ladrillos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Ladrillos</span>
+                        <h3 class="producto-titulo">Ladrillos King Kong</h3>
+                        <p class="producto-subtitulo">Para muros portantes</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Ladrillos de arcilla cocida tipo King Kong, ideales para muros portantes y de carga. Fabricados por Ladrillera El Diamante con excelente resistencia y acabado uniforme.</p>
+                    <div class="producto-specs">
+                        <h4>🧱 Especificaciones técnicas:</h4>
+                        <ul class="specs-list">
+                            <li>Dimensiones: 24x13x9 cm</li>
+                            <li>Alta resistencia a compresión</li>
+                            <li>Arcilla cocida de calidad</li>
+                            <li>Para muros portantes</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 0.85 c/u</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-ladrillos producto-ladrillos-pandereta" data-categoria="ladrillos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Ladrillos</span>
+                        <h3 class="producto-titulo">Ladrillos Pandereta</h3>
+                        <p class="producto-subtitulo">Para tabiquería y cercos</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Ladrillos pandereta para muros no portantes, divisiones interiores y cercos perimetrales. Ligeros y con buen aislamiento térmico y acústico.</p>
+                    <div class="producto-specs">
+                        <h4>🏠 Características:</h4>
+                        <ul class="specs-list">
+                            <li>Para muros no portantes</li>
+                            <li>Divisiones interiores</li>
+                            <li>Ligeros y manejables</li>
+                            <li>Buen aislamiento térmico</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 0.65 c/u</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-ladrillos producto-ladrillos-techo" data-categoria="ladrillos">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Ladrillos</span>
+                        <h3 class="producto-titulo">Ladrillos Techo</h3>
+                        <p class="producto-subtitulo">Para losas aligeradas</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Ladrillos especiales para construcción de losas aligeradas y techos. Diseñados para reducir el peso de la estructura manteniendo la resistencia necesaria.</p>
+                    <div class="producto-specs">
+                        <h4>🏗️ Ventajas estructurales:</h4>
+                        <ul class="specs-list">
+                            <li>Para losas aligeradas</li>
+                            <li>Reducen peso de estructura</li>
+                            <li>Facilitan instalaciones</li>
+                            <li>Optimizan uso de concreto</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">S/ 1.20 c/u</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <!-- PRODUCTOS DE TUBERÍAS -->
+            <div class="producto-card categoria-tuberias producto-tuberias-presion" data-categoria="tuberias">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Tuberías</span>
+                        <h3 class="producto-titulo">Tuberías PVC Presión</h3>
+                        <p class="producto-subtitulo">Para sistemas de agua potable</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Tuberías de PVC para sistemas de agua potable a presión. Resistentes, durables y aptas para agua de consumo humano. Disponibles en múltiples diámetros.</p>
+                    <div class="producto-specs">
+                        <h4>💧 Características técnicas:</h4>
+                        <ul class="specs-list">
+                            <li>Para agua potable certificada</li>
+                            <li>Resistentes a la presión</li>
+                            <li>Diámetros: 1/2" a 8"</li>
+                            <li>Larga durabilidad (50 años)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">Varios precios</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-tuberias producto-tuberias-desague" data-categoria="tuberias">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Tuberías</span>
+                        <h3 class="producto-titulo">Tuberías PVC Desagüe</h3>
+                        <p class="producto-subtitulo">Para sistemas de desagüe</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripción">Tuberías de PVC para sistemas de desagüe y ventilación. Diseñadas para evacuación de aguas servidas con excelente resistencia química y durabilidad.</p>
+                    <div class="producto-specs">
+                        <h4>🚿 Aplicaciones:</h4>
+                        <ul class="specs-list">
+                            <li>Desagües domiciliarios</li>
+                            <li>Sistemas de ventilación</li>
+                            <li>Resistencia química superior</li>
+                            <li>Diámetros: 2" a 12"</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">Varios precios</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+            
+            <div class="producto-card categoria-tuberias producto-tuberias-electrico" data-categoria="tuberias">
+                <div class="producto-imagen">
+                    <div class="producto-header">
+                        <span class="producto-categoria">Tuberías</span>
+                        <h3 class="producto-titulo">Tuberías PVC Eléctrico</h3>
+                        <p class="producto-subtitulo">Para instalaciones eléctricas</p>
+                    </div>
+                </div>
+                <div class="producto-contenido">
+                    <p class="producto-descripcion">Tuberías de PVC especiales para protección de cables eléctricos. Resistentes al impacto y a la temperatura, ideales para instalaciones empotradas y aparentes.</p>
+                    <div class="producto-specs">
+                        <h4>⚡ Características eléctricas:</h4>
+                        <ul class="specs-list">
+                            <li>Protección de cables certificada</li>
+                            <li>Resistentes al impacto</li>
+                            <li>No conductoras (seguras)</li>
+                            <li>Diámetros: 5/8" a 4"</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="producto-footer">
+                    <span class="precio-tag">Varios precios</span>
+                    <a href="#" class="contacto-btn">💬 Cotizar ahora</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <h3>🔍 No se encontraron productos</h3>
+            <p>Intenta seleccionar otra categoría o contactanos directamente</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Iniciando sistema de filtros...');
+            
+            // Obtener elementos
+            const filterButtons = document.querySelectorAll('.filtro-btn');
+            const productCards = document.querySelectorAll('.producto-card');
+            const productGrid = document.getElementById('productosGrid');
+            const noResults = document.getElementById('noResults');
+            
+            console.log('📊 Elementos encontrados:');
+            console.log('- Botones filtro:', filterButtons.length);
+            console.log('- Tarjetas productos:', productCards.length);
+            console.log('- Grid productos:', productGrid ? 'Sí' : 'No');
+            console.log('- Mensaje sin resultados:', noResults ? 'Sí' : 'No');
+            
+            // Función principal de filtrado
+            function filtrarProductos(categoriaSeleccionada) {
+                console.log('🔍 Filtrando por:', categoriaSeleccionada);
+                let productosVisibles = 0;
+                
+                productCards.forEach(tarjeta => {
+                    const categoriaProducto = tarjeta.getAttribute('data-categoria');
+                    console.log('- Producto categoria:', categoriaProducto);
+                    
+                    if (categoriaSeleccionada === 'todas' || categoriaProducto === categoriaSeleccionada) {
+                        // Mostrar producto
+                        tarjeta.style.display = 'block';
+                        tarjeta.style.opacity = '1';
+                        tarjeta.style.transform = 'scale(1)';
+                        tarjeta.classList.remove('hidden');
+                        productosVisibles++;
+                    } else {
+                        // Ocultar producto
+                        tarjeta.style.display = 'none';
+                        tarjeta.classList.add('hidden');
+                    }
+                });
+                
+                console.log('✅ Productos visibles:', productosVisibles);
+                
+                // Mostrar/ocultar mensaje "sin resultados"
+                if (productosVisibles === 0) {
+                    if (noResults) noResults.style.display = 'block';
+                    if (productGrid) productGrid.style.display = 'none';
+                } else {
+                    if (noResults) noResults.style.display = 'none';
+                    if (productGrid) productGrid.style.display = 'grid';
+                }
+            }
+            
+            // Configurar botones de filtro
+            filterButtons.forEach(boton => {
+                boton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🖱️ Clic en botón:', this.textContent);
+                    
+                    // Quitar clase active de todos los botones
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase active al botón actual
+                    this.classList.add('active');
+                    
+                    // Obtener categoría del botón
+                    const categoria = this.getAttribute('data-categoria');
+                    console.log('📂 Categoría seleccionada:', categoria);
+                    
+                    // Filtrar productos
+                    filtrarProductos(categoria);
+                });
+            });
+            
+            // Configurar botones de cotización
+            const botonesWhatsApp = document.querySelectorAll('.contacto-btn');
+            botonesWhatsApp.forEach(boton => {
+                boton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const tarjeta = this.closest('.producto-card');
+                    const titulo = tarjeta.querySelector('.producto-titulo').textContent;
+                    const categoria = tarjeta.querySelector('.producto-categoria').textContent;
+                    
+                    const mensaje = `Hola! Me interesa el producto: ${titulo} (${categoria}). ¿Podrían enviarme más información y precio? Gracias!`;
+                    const numeroWhatsApp = '51999999999'; // ⚠️ CAMBIAR NÚMERO
+                    const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+                    
+                    window.open(urlWhatsApp, '_blank');
+                });
+            });
+            
+            // Inicializar mostrando todos los productos
+            console.log('🎯 Inicializando filtros...');
+            filtrarProductos('todas');
+            
+            console.log('✅ Sistema de filtros iniciado correctamente');
+        });
+    </script>
+</body>
+</html>

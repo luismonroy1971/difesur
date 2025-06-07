@@ -176,7 +176,7 @@
         }
         
         .producto-imagen {
-            height: 200px;
+            height: 250px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -196,12 +196,13 @@
         
         .producto-header {
             position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
             padding: 20px;
             color: white;
             z-index: 2;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
         }
         
         .producto-categoria {
@@ -220,19 +221,17 @@
             font-size: 1.4em;
             font-weight: bold;
             margin-bottom: 8px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
         }
         
         .producto-subtitulo {
             font-size: 0.95em;
             opacity: 0.9;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
         }
         
         .producto-contenido {
             padding: 25px;
-            position: relative;
-            top: 180px;
         }
         
         .producto-descripcion {
@@ -283,8 +282,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            top: 180px;
         }
         
         .contacto-btn {
@@ -451,9 +448,8 @@
                 gap: 20px;
             }
             
-            .producto-contenido,
-            .producto-footer {
-                top: 160px;
+            .producto-imagen {
+                height: 200px;
             }
         }
     </style>
@@ -808,7 +804,7 @@
                     </div>
                 </div>
                 <div class="producto-contenido">
-                    <p class="producto-descripción">Tuberías de PVC para sistemas de desagüe y ventilación. Diseñadas para evacuación de aguas servidas con excelente resistencia química y durabilidad.</p>
+                    <p class="producto-descripcion">Tuberías de PVC para sistemas de desagüe y ventilación. Diseñadas para evacuación de aguas servidas con excelente resistencia química y durabilidad.</p>
                     <div class="producto-specs">
                         <h4>🚿 Aplicaciones:</h4>
                         <ul class="specs-list">

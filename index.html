@@ -12,15 +12,15 @@
         }
         
         .productos-container {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
             padding: 20px;
             font-family: 'Arial', sans-serif;
             background: #f8f9fa;
         }
         
         .intro-section {
-            background: linear-gradient(135deg, #FFB92A 0%, #F49B00 100%);
+            background: rgb(8, 8, 71);
             text-align: center;
             margin-bottom: 40px;
             padding: 40px 20px;
@@ -46,7 +46,7 @@
         }
         
         .intro-section h2 {
-            color: #2c3e50;
+            color: #f4f7fa;
             margin-bottom: 15px;
             font-size: 2.5em;
             font-weight: bold;
@@ -55,7 +55,7 @@
         }
         
         .intro-section p {
-            color: #2c3e50;
+            color: #b9bdc2;
             font-size: 1.2em;
             line-height: 1.6;
             position: relative;
@@ -64,7 +64,7 @@
         }
         
         .marcas {
-            background: rgba(44, 62, 80, 0.9);
+            background: rgba(131, 13, 27, 0.9);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -75,7 +75,7 @@
         }
         
         .marcas strong {
-            color: #FFB92A;
+            color: #d2d8df;
         }
         
         .filtros-container {
@@ -102,15 +102,15 @@
         }
         
         .filtro-btn {
-            background: linear-gradient(145deg, #ffffff, #f8f9fa);
-            border: 2px solid #e9ecef;
+            background: linear-gradient(145deg, #dc3545, #c82333);
+            border: 2px solid #dc3545;
             padding: 15px 30px;
-            border-radius: 30px;
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
             font-size: 14px;
-            color: #495057;
+            color: white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             position: relative;
             overflow: hidden;
@@ -118,16 +118,17 @@
         
         .filtro-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 185, 42, 0.3);
-            border-color: #FFB92A;
-            color: #2c3e50;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+            border-color: #007bff;
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            color: white;
         }
         
         .filtro-btn.active {
-            background: linear-gradient(145deg, #FFB92A, #F49B00);
-            color: #2c3e50;
-            border-color: #F49B00;
-            box-shadow: 0 8px 25px rgba(255, 185, 42, 0.4);
+            background: linear-gradient(145deg, #dc3545, #c82333);
+            color: white;
+            border-color: #dc3545;
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
             font-weight: bold;
         }
         
@@ -206,10 +207,10 @@
         }
         
         .producto-categoria {
-            background: rgba(255, 185, 42, 0.9);
-            color: #2c3e50;
+            background: rgba(175, 19, 13, 0.9);
+            color: #e6ebf0;
             padding: 8px 15px;
-            border-radius: 20px;
+            border-radius: 0px;
             font-size: 0.85em;
             font-weight: bold;
             display: inline-block;
@@ -246,7 +247,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-top: 15px;
-            border-left: 4px solid #FFB92A;
+            border-left: 4px solid #dc3545;
         }
         
         .producto-specs h4 {
@@ -266,7 +267,7 @@
             margin: 8px 0;
             padding: 10px 15px;
             border-radius: 8px;
-            border-left: 3px solid #FFB92A;
+            border-left: 3px solid #dc3545;
             font-size: 0.9em;
             color: #495057;
             transition: all 0.2s ease;
@@ -285,11 +286,11 @@
         }
         
         .contacto-btn {
-            background: linear-gradient(145deg, #2c3e50, #34495e);
+            background: linear-gradient(145deg, #dc3545, #c82333);
             color: white;
             padding: 12px 25px;
             border: none;
-            border-radius: 25px;
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
@@ -306,7 +307,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 185, 42, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.3), transparent);
             transition: left 0.5s;
         }
         
@@ -315,10 +316,10 @@
         }
         
         .contacto-btn:hover {
-            background: linear-gradient(145deg, #FFB92A, #F49B00);
-            color: #2c3e50;
+            background: linear-gradient(145deg, #1e3a8a, #1e40af);
+            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 185, 42, 0.4);
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
         }
         
         /* Imágenes específicas por categoría */
@@ -413,10 +414,10 @@
         }
         
         .precio-tag {
-            background: #FFB92A;
-            color: #2c3e50;
+            background: #007bff;
+            color: white;
             padding: 5px 12px;
-            border-radius: 15px;
+            border-radius: 0;
             font-size: 0.9em;
             font-weight: bold;
         }
@@ -467,11 +468,11 @@
         <div class="filtros-container">
             <h3 class="filtros-titulo">Encuentra el material que necesitas</h3>
             <div class="filtros-botones">
-                <button class="filtro-btn active" data-categoria="todas">📋 Todos los productos</button>
-                <button class="filtro-btn" data-categoria="acero">🔩 Acero</button>
-                <button class="filtro-btn" data-categoria="cementos">🏗️ Cementos</button>
-                <button class="filtro-btn" data-categoria="ladrillos">🧱 Ladrillos</button>
-                <button class="filtro-btn" data-categoria="tuberias">🚿 Tuberías</button>
+                <button class="filtro-btn active" data-categoria="todas">TODOS LOS PRODUCTOS</button>
+                <button class="filtro-btn" data-categoria="acero">ACERO</button>
+                <button class="filtro-btn" data-categoria="cementos">CEMENTOS</button>
+                <button class="filtro-btn" data-categoria="ladrillos">LADRILLOS</button>
+                <button class="filtro-btn" data-categoria="tuberias">TUBERÍAS</button>
             </div>
         </div>
         
